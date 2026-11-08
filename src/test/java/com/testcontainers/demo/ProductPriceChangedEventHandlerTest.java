@@ -24,7 +24,7 @@ import org.testcontainers.utility.DockerImageName;
 @TestPropertySource(
   properties = {
     "spring.kafka.consumer.auto-offset-reset=earliest",
-    "spring.datasource.url=jdbc:tc:mysql:8.4.11:///db",
+    "spring.datasource.url=jdbc:tc:mysql:8.4.13:///db",
   }
 )
 @Testcontainers
@@ -32,7 +32,7 @@ class ProductPriceChangedEventHandlerTest {
 
   @Container
   static final ConfluentKafkaContainer kafka = new ConfluentKafkaContainer(
-    DockerImageName.parse("confluentinc/cp-kafka:8.3.1")
+    DockerImageName.parse("confluentinc/cp-kafka:8.4.0")
   );
 
   @DynamicPropertySource

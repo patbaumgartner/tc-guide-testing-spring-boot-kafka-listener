@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>4.1.1</version>
+    <version>4.1.2</version>
     <relativePath></relativePath>
     <!-- lookup parent from repository -->
   </parent>
@@ -74,15 +74,15 @@
       <plugin>
         <groupId>com.diffplug.spotless</groupId>
         <artifactId>spotless-maven-plugin</artifactId>
-        <version>3.10.2</version>
+        <version>3.11.0</version>
         <configuration>
           <java>
             <importOrder></importOrder>
             <removeUnusedImports></removeUnusedImports>
             <prettier>
               <devDependencies>
-                <prettier>3.9.8</prettier>
-                <prettier-plugin-java>2.10.3</prettier-plugin-java>
+                <prettier>3.9.10</prettier>
+                <prettier-plugin-java>2.11.0</prettier-plugin-java>
               </devDependencies>
               <config>
                 <parser>java</parser>
