@@ -14,5 +14,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Deploy
+        if: ${{ secrets.NETLIFY_WEBHOOK_URL != '' }}
         run: |
           curl -X POST -d {} ${{ secrets.NETLIFY_WEBHOOK_URL }}
