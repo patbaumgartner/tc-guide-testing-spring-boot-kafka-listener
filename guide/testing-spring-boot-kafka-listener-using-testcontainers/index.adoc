@@ -37,14 +37,14 @@ and MySQL modules in conjunction with http://www.awaitility.org/[Awaitility].
 You can create a new Spring Boot project from https://start.spring.io[Spring Initializr] by selecting the
 *Spring for Apache Kafka*, *Spring Data JPA*, *MySQL Driver* and *Testcontainers* starters.
 
-Once the application is generated add the Awaitility library as test dependency
-which we can use for asserting the expectations of an asynchronous process flow.
+Once the application is generated, add the Spring Boot Jackson starter for Kafka JSON serialization
+and the Awaitility library as a test dependency for asserting asynchronous process flows.
 
 If you have selected Gradle as the build tool, then the generated build.gradle file should have the following dependencies.
 
 [source,groovy,indent=0]
 ----
-include::{codebase}/build.gradle[lines="25..36"]
+include::{codebase}/build.gradle[lines="27..38"]
 ----
 
 We are going to implement a Kafka Listener listening to a topic named product-price-changes
@@ -123,11 +123,11 @@ configure the following properties in *src/main/resources/application.properties
 
 [source,properties]
 ----
-include::{codebase}/src/main/resources/application.properties[lines="3..11"]
+include::{codebase}/src/main/resources/application.properties[lines="3..12"]
 ----
 
 We are going to use productCode as key which will be (de)serialized using *StringSerializer*/*StringDeserializer*
-and *ProductPriceChangedEvent* as value which will be (de)serialized using *JsonSerializer*/*JsonDeserializer*.
+and *ProductPriceChangedEvent* as value which will be (de)serialized using *JacksonJsonSerializer*/*JacksonJsonDeserializer*.
 
 == Write Test for Kafka Listener
 We are going to write a test for the Kafka event listener *ProductPriceChangedEventHandler*
@@ -148,9 +148,10 @@ Let us understand what is going on in this test.
 
 * We have annotated the test class with the *@SpringBootTest* annotation to write an integration test which loads the complete Spring application context.
 * We have configured the Testcontainers special JDBC URL to spin up a MySQL container and configure it as a DataSource with Spring Boot application context.
-* We have used the Testcontainers JUnit 5 Extension annotations *@Testcontainers* and *@Container* to spin up a Kafka container and registered the *bootstrap-servers* location using *DynamicPropertySource* mechanism.
+* We have used the Testcontainers JUnit Jupiter extension annotations *@Testcontainers* and *@Container* to spin up a Kafka container and registered the *bootstrap-servers* location using *DynamicPropertySource* mechanism.
 * We have created a Product record in the database before running the test using the *@BeforeEach* callback method.
-* During the test, we sent a message to the *product-price-changes* topic using *KafkaTemplate* with productCode as key and *ProductPriceChangedEvent* instance as value. Spring Boot will take care of converting the object into JSON using *JsonSerializer*.
+* During the test, we sent a message to the *product-price-changes* topic using *KafkaTemplate* with productCode as key and *ProductPriceChangedEvent* instance as value. Spring Boot will take care of converting the object into JSON using *JacksonJsonSerializer*.
+* A second test sends JSON with the legacy Spring Kafka type header to check compatibility with earlier producers.
 * As Kafka message processing is an asynchronous process, we are using the *Awaitility* library to check whether the product price is updated in the database to the expected value or not with an interval of 3 seconds waiting up to a maximum of 10 seconds. If the message is consumed and processed within 10 seconds the test will pass, otherwise the test will fail.
 * Also, notice that we have configured the property *spring.kafka.consumer.auto-offset-reset* to *earliest* so that the listener will consume the messages even if the message is sent to the topic before the listener is ready. This setting is helpful for running tests.
 

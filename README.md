@@ -4,8 +4,7 @@ This is sample code for [Testing Spring Boot Kafka Listener using Testcontainers
 
 ## 1. Setup Environment
 
-Make sure you have Java 8+ and a [compatible Docker environment](https://www.testcontainers.org/supported_docker_environment/) installed.
-If you are going to use Maven build tool then make sure Java 17+ is installed.
+Make sure you have Java 17+ and a [compatible Docker environment](https://www.testcontainers.org/supported_docker_environment/) installed.
 
 For example:
 
@@ -44,8 +43,8 @@ cd tc-guide-testing-spring-boot-kafka-listener
 Run the command to run the tests.
 
 ```shell
-$ ./gradlew test //for Gradle
-$ ./mvnw verify  //for Maven
+./gradlew test # Gradle
+./mvnw verify  # Maven
 ```
 
 The tests should pass.
@@ -57,6 +56,6 @@ The tests should pass.
 > you can pass additional parameter to the build command as shown below:
 
 ```shell
-./gradlew build -x spotlessCheck //for Gradle
-./mvnw verify -Dspotless.check.skip=true //for Maven
+./gradlew build -x spotlessCheck # Gradle
+./mvnw verify -Dspotless.check.skip=true # Maven
 ```
